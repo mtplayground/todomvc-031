@@ -1,0 +1,12 @@
+.git
+.github
+.claude
+node_modules
+dist
+coverage
+.vite
+.npm
+.pnpm-store
+*.log
+.gh_token
+.progress
