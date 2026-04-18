@@ -1,15 +1,18 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vitest'
 import App from './App'
 
 describe('App', () => {
-  it('renders the smoke heading', () => {
+  beforeEach(() => {
+    window.localStorage.clear()
+    window.location.hash = '#/'
+  })
+
+  it('renders TodoMVC root layout with header and info footer', () => {
     render(<App />)
 
-    expect(
-      screen.getByRole('heading', {
-        name: /get started/i,
-      })
-    ).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'todos' })).toBeInTheDocument()
+    expect(screen.getByText(/double-click to edit a todo/i)).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /todomvc/i })).toBeInTheDocument()
   })
 })
