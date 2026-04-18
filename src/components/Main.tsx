@@ -34,6 +34,7 @@ export const Main = ({ filter = 'all' }: MainProps) => {
         id="toggle-all"
         className="toggle-all"
         type="checkbox"
+        aria-label="Toggle all todos"
         checked={allCompleted}
         onChange={toggleAllTodos}
       />
