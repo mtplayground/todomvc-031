@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTodos } from '../state/useTodos'
 import type { Todo } from '../types'
 
@@ -11,6 +11,19 @@ export const TodoItem = ({ todo }: TodoItemProps) => {
   const [isEditing, setIsEditing] = useState(false)
   const [draftTitle, setDraftTitle] = useState(todo.title)
   const skipBlurCommitRef = useRef(false)
+  const editInputRef = useRef<HTMLInputElement | null>(null)
+
+  useEffect(() => {
+    if (!isEditing || !editInputRef.current) {
+      return
+    }
+
+    const input = editInputRef.current
+    input.focus()
+
+    const cursorPosition = input.value.length
+    input.setSelectionRange(cursorPosition, cursorPosition)
+  }, [isEditing])
 
   const startEditing = () => {
     setDraftTitle(todo.title)
@@ -48,16 +61,23 @@ export const TodoItem = ({ todo }: TodoItemProps) => {
         <input
           className="toggle"
           type="checkbox"
+          aria-label={`Toggle ${todo.title}`}
           checked={todo.completed}
           onChange={() => toggleTodo(todo.id)}
         />
         <label onDoubleClick={startEditing}>{todo.title}</label>
-        <button className="destroy" onClick={() => removeTodo(todo.id)}></button>
+        <button
+          className="destroy"
+          aria-label={`Delete ${todo.title}`}
+          onClick={() => removeTodo(todo.id)}
+        ></button>
       </div>
 
       {isEditing ? (
         <input
+          ref={editInputRef}
           className="edit"
+          aria-label={`Edit ${todo.title}`}
           value={draftTitle}
           onChange={(event) => setDraftTitle(event.target.value)}
           onBlur={() => {

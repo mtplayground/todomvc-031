@@ -22,6 +22,7 @@ export const Header = () => {
       <input
         autoFocus
         className="new-todo"
+        aria-label="New todo"
         placeholder="What needs to be done?"
         value={newTodoTitle}
         onChange={(event) => setNewTodoTitle(event.target.value)}
